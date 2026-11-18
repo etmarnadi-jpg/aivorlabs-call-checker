@@ -1,0 +1,60 @@
+# The call checker (aivorlabs-call-checker; made by make-public.py in the site's repository, arch-job8).
+# Started only when asked (workflow_dispatch): by hand, or by the site while the team's checker is quiet. No timer.
+# Secrets, by name only (all read-only or send-only): REC_DROP_URL, REC_DROP_READ_KEY, REC_SEAL_KEY, CHECKER_SENTRY_DSN, CHECKER_REFUSE_SALT.
+# This repository is public, so its logs are too: the judging step prints only its last count line.
+name: call-checker
+on:
+  workflow_dispatch: {}
+concurrency:
+  group: call-checker
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  judge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      REC_DROP_URL: ${{ secrets.REC_DROP_URL }}
+      REC_DROP_READ_KEY: ${{ secrets.REC_DROP_READ_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: the calls already judged (from the last run)
+        uses: actions/cache/restore@v4
+        with:
+          path: checker/state/seen.json
+          key: checker-seen-${{ github.run_id }}
+          restore-keys: checker-seen-
+      - name: anything new at rec-drop?
+        id: peek
+        run: mkdir -p checker/state && python checker/run.py --peek --state checker/state
+      - name: the speed reader's packages (cached)
+        if: steps.peek.outputs.new != '0'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: checker-pip-${{ hashFiles('checker/requirements.txt') }}
+      - name: install
+        if: steps.peek.outputs.new != '0'
+        run: |
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.15.0
+          python -m pip install -r checker/requirements.txt
+      - name: judge the new calls
+        if: steps.peek.outputs.new != '0'
+        env:
+          REC_SEAL_KEY: ${{ secrets.REC_SEAL_KEY }}
+          SENTRY_DSN: ${{ secrets.CHECKER_SENTRY_DSN }}
+          REFUSE_SALT: ${{ secrets.CHECKER_REFUSE_SALT }}
+        run: |
+          set -o pipefail
+          python checker/run.py --source rec-drop --state checker/state --wait 240 > checker/state/run.log 2>&1 || { echo "the run failed; its log stays on the runner (a public log never shows it)"; exit 1; }
+          tail -n 1 checker/state/run.log | sed -E 's/[0-9]{7,}/[digits]/g'
+      - name: keep the calls judged for the next run (labels only)
+        if: always() && steps.peek.outputs.new != '0'
+        uses: actions/cache/save@v4
+        with:
+          path: checker/state/seen.json
+          key: checker-seen-${{ github.run_id }}

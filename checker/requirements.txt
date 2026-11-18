@@ -1,0 +1,7 @@
+# The call checker's GitHub copy: the same versions the Mac's checker uses (callgrade's venv on the Mac,
+# and rec-pull's cryptography), read on 17 Nov 2026. torch is installed first from the CPU-only index (see the workflow).
+cryptography==44.0.2
+numpy==2.5.4
+soundfile==0.14.0
+silero-vad==6.2.3
+torch==2.15.0

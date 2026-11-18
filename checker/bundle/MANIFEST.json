@@ -1,0 +1,20 @@
+{
+ "copy": {
+  "check/callgrade.py": "c0ffa56b29ddbfc444252d6d6973693a668c935a69c0f58d4ff4992bc43474a4",
+  "check/elijah_check.py": "4d5414a74f19d4fa6d0d62503d7f7c69a3f8b16ff80432e6a4b94ff7cb8df336",
+  "keeper/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "keeper/calls.py": "88d629c15ee5432e1a4a28c832f7129871dfc2027ff0e4ea7a83748cc211b2ed",
+  "keeper/dates.py": "9fbe383e8da94e34a37e252d286154ca01956161ac7ba6d8c23cac1550e65c25",
+  "keeper/events.py": "c25f985f75827f2940099a5a0215925288f4b13722b2b47450bfce9372442f77",
+  "keeper/judge.py": "87ce65194819da26b87e6d7a68ef4cc6e0f27c03dd83b25e3e00fc6861ff2301",
+  "keeper/lines.py": "d2b071f6edcafb1ba0be9edbeafd9fd243bbc5864e23bbfbd95121754b1b6cc2",
+  "keeper/outbound.py": "94579b8269094e11b448c742b545b8be08fd88945453daa3820fa373e38cdf51",
+  "keeper/refuse.py": "5a1e986268d48e74ac06ca8ee789dc493ca2c6baba6a28ce086b66c90043ffdd",
+  "keeper/scrub.py": "6dc5e115b6b1d8570d0dd7f7b2f3e1c0f6efdcc46236d84d14bcb8d5264313f3",
+  "keeper/timefmt.py": "9a2f7efb265613be8a9e1060b73bc26daea58cd08b6922cc5c1178a895746aac",
+  "keeper/tools.py": "eee13907a3fda0fd1d7841f1d6040466428398df88814724dd7d37d224b0b189",
+  "snapshot/llm-accounts.txt": "790a4c219a2137de4f252174632490ca718ab06149b49da9c5559b553a1754e7",
+  "snapshot/other-lines": "4094e22e5fe7e6ab477e9c688f157fd2667602467aff664dd682db37f9ad2f3c",
+  "snapshot/watches.json": "a558383e0a1b36f18316413f642ad924351ad7fc14a5159cf90c0e66df3bd069"
+ }
+}
